@@ -14,10 +14,10 @@ import javax.transaction.Transactional;
  */
 @RequestScoped
 public class VoterDAO {
-    
+
     @PersistenceContext(unitName = "MiniTSE_PU")
     EntityManager em;
-    
+
     @Transactional
     public void register(Voter newVoter){
         em.persist(newVoter);
@@ -27,11 +27,15 @@ public class VoterDAO {
     public List<Voter> findAll() {
         //JPQL
         TypedQuery<Voter> query = em.createQuery(
-                "SELECT v FROM Voter v", 
+
+
+                //Equivalente a SELECT * FROM votante
+
+                "SELECT v FROM Voter v",
                 Voter.class
         );
         List<Voter> result = query.getResultList();
         return result;
     }
-    
+
 }
