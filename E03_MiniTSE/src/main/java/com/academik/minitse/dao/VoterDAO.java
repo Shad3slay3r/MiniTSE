@@ -27,7 +27,7 @@ public class VoterDAO {
     public List<Voter> findAll() {
         //JPQL
         TypedQuery<Voter> query = em.createQuery(
-                "SELECT v.dpi, v.firstName, v.lastName, v.height FROM Voter v", 
+                "SELECT v FROM Voter v", 
                 Voter.class
         );
         List<Voter> result = query.getResultList();
