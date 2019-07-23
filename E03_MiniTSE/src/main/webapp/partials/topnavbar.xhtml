@@ -11,18 +11,23 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <h:form>
-                        <h:commandLink action="voters" class="nav-link">Votantes</h:commandLink>    
+                        <h:commandLink action="#{nav.goVoters()}" class="nav-link">Votantes</h:commandLink>    
                     </h:form>                
                 </li>
                 <li class="nav-item">
                     <h:form>
-                        <h:commandLink action="votingplaces" class="nav-link">Centros de votacion</h:commandLink>
+                        <h:commandLink action="#{nav.goVotingPlaces()}" class="nav-link">Centros de votación</h:commandLink>
                     </h:form> 
                 </li>
                 <li class="nav-item">
                    <h:form>
                         <h:commandLink action="PoliticalParty" class="nav-link">Partidos</h:commandLink>
                     </h:form> 
+                </li>
+                <li class="nav-item">
+                    <h:form>
+                        <h:commandLink action="#{nav.goVoteSubmit()}" class="nav-link">Emitir voto</h:commandLink>
+                    </h:form>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Consultas</a>

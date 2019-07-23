@@ -6,28 +6,31 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <ui:composition template="templates/main.xhtml">
-        
+
         <ui:define name="content">
-            <h1>Todos los votantes</h1>
             <h:form>
-                <h:dataTable class="table" value="#{listVotersBean.voters}" var="v">
+                <h:dataTable class="table" value="#{voterListBean.voters}" var="v">
                     <h:column>
                         <f:facet name="header">DPI</f:facet>
-                            #{v[1]}
+
+                        <h:outputText value="#{v.dpi}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Nombres</f:facet>
-                            #{v[2]}
+                        <h:outputText value="#{v.firstName}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Apellidos</f:facet>
-                            #{v[3]}
+                        <h:outputText value="#{v.lastName}"/>
+
                     </h:column>
                 </h:dataTable>
-                <h:commandLink value="Registrar nuevo votante" action="register"/>
-            </h:form>        
+                <h:commandLink
+                    value="Registrar nuevo votante"
+                    class="btn btn-primary"
+                    action="#{nav.goCreateVoters()}"/>
+            </h:form>
         </ui:define>
 
     </ui:composition>
 </html>
-

@@ -6,7 +6,9 @@ import com.academik.minitse.dao.VotingPlaceDAO;
 import com.academik.minitse.model.Department;
 import com.academik.minitse.model.Municipality;
 import com.academik.minitse.model.VotingPlace;
+import com.academik.minitse.model.VotingTable;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -14,29 +16,36 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author esvux
  */
-@ManagedBean(name = "registerVotingPlaceBean" )
+@ManagedBean(name = "votingPlaceCreateBean")
 @ViewScoped
-public class RegisterVotingPlaceBean implements Serializable {
-    
+public class VotingPlaceCreateBean implements Serializable {
+
     @Inject
     DepartmentDAO daoDept;
 
     @Inject
     MunicipalityDAO daoMun;
-    
+
     @Inject
     VotingPlaceDAO daoVotingPlace;
-    
+
     private Long selectedDepartmentId;
     private Long selectedMunicipalityId;
     private String tempName;
+    
+    @Size(min = 10, max = 500, message = "El campo direccion debe tener entre 10 y 500 caracteres")
     private String tempAddress;
     private String tempExtraAddress;
+    private Integer tempInitTable;
+    private Integer tempEndTable;
     private List<Department> allDepartments;
     private List<Municipality> allMunicipalities;
 
@@ -44,7 +53,7 @@ public class RegisterVotingPlaceBean implements Serializable {
     public void init() {
         allDepartments = daoDept.findAll();
     }
-    
+
     public Long getSelectedDepartmentId() {
         return selectedDepartmentId;
     }
@@ -60,7 +69,7 @@ public class RegisterVotingPlaceBean implements Serializable {
     public void setSelectedMunicipalityId(Long selectedMunicipalityId) {
         this.selectedMunicipalityId = selectedMunicipalityId;
     }
-    
+
     public String getTempName() {
         return tempName;
     }
@@ -84,18 +93,34 @@ public class RegisterVotingPlaceBean implements Serializable {
     public void setTempExtraAddress(String tempExtraAddress) {
         this.tempExtraAddress = tempExtraAddress;
     }
-    
+
+    public Integer getTempInitTable() {
+        return tempInitTable;
+    }
+
+    public void setTempInitTable(Integer tempInitTable) {
+        this.tempInitTable = tempInitTable;
+    }
+
+    public Integer getTempEndTable() {
+        return tempEndTable;
+    }
+
+    public void setTempEndTable(Integer tempEndTable) {
+        this.tempEndTable = tempEndTable;
+    }
+
     public List<Department> getAllDepartments() {
         return allDepartments;
     }
-    
+
     public List<Municipality> getAllMunicipalities() {
         return allMunicipalities;
     }
-    
+
     public final void changeDepartment(final AjaxBehaviorEvent event) {
         //Si la opcion seleccionada en Departamento es null, limpiar el combobox de Municipio
-        if(selectedDepartmentId == null) {
+        if (selectedDepartmentId == null) {
             selectedMunicipalityId = null;
             allMunicipalities = Collections.EMPTY_LIST;
             return;
@@ -105,19 +130,26 @@ public class RegisterVotingPlaceBean implements Serializable {
         dept.setId(selectedDepartmentId);
         allMunicipalities = daoMun.findByDepartment(dept);
     }
-    
-    public String register() {
+
+    public void register() {
         VotingPlace place = new VotingPlace();
         place.setName(tempName);
         place.setAddress(tempAddress);
         place.setExtraAddress(tempExtraAddress);
         Municipality m = new Municipality(selectedMunicipalityId);
-        place.setMunicipality(m);
+        place.setMunicipality(m);        
+        List<VotingTable> tables = new ArrayList<>();
+        for(int i=tempInitTable; i<=tempEndTable; i++) {
+            VotingTable t = new VotingTable();
+            t.setTableNum(i);
+            t.setVotingPlace(place);
+            tables.add(t);
+        }
+        place.setTables(tables);
         daoVotingPlace.create(place);
         clearForm();
-        return "votingplacecreate";
     }
-    
+
     private void clearForm() {
         tempName = null;
         tempAddress = null;
@@ -127,5 +159,5 @@ public class RegisterVotingPlaceBean implements Serializable {
         allDepartments = daoDept.findAll();
         allMunicipalities = Collections.EMPTY_LIST;
     }
-   
+
 }
