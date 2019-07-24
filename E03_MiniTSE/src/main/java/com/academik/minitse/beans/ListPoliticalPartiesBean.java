@@ -5,7 +5,8 @@
  */
 package com.academik.minitse.beans;
 
-import com.academik.minitse.dao.PoliticalPartyDao;
+import com.academik.minitse.dao.PoliticalPartyDAO;
+
 import com.academik.minitse.dao.VoterDAO;
 import com.academik.minitse.model.PoliticalParty;
 import com.academik.minitse.model.Voter;
@@ -23,7 +24,7 @@ import javax.inject.Inject;
 public class ListPoliticalPartiesBean {
   
     @Inject
-    PoliticalPartyDao dao;
+    PoliticalPartyDAO dao;
     
     List<PoliticalParty> politicalp;
 
